@@ -1,0 +1,28 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      APP_ENV: development
+      APP_SECRET: docker-development-secret
+      DATABASE_URL: sqlite:////data/koru_bank.db
+      CORS_ORIGINS: http://localhost:5173
+      AI_ENABLED: "false"
+      AI_PROVIDER: disabled
+      DEMO_BALANCE: "2430.70"
+    volumes:
+      - koru_data:/data
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  koru_data:
