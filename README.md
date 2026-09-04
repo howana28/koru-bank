@@ -3,6 +3,7 @@
 Case de portfólio que evolui o protótipo original do Koru Bank para uma aplicação **Full Stack**, com frontend em React, API em FastAPI, persistência de sessões/conversas, automações orientadas a eventos, testes e arquitetura preparada para integração futura com IA.
 
 > **Importante:** este projeto é uma simulação educacional. Não executa operações bancárias reais, não deve receber dados pessoais reais e não implementa autenticação bancária de produção.
+> Acesso ao projeto: https://koru-bank.onrender.com/
 
 ## Destaques
 
