@@ -1,27 +1,29 @@
+🇧🇷 [Leia em Português](README.pt-br.md)
+
 # Koru Bank — Full Stack Banking Assistant
 
-Case de portfólio que evolui o protótipo original do Koru Bank para uma aplicação **Full Stack**, com frontend em React, API em FastAPI, persistência de sessões/conversas, automações orientadas a eventos, testes e arquitetura preparada para integração futura com IA.
+Portfolio case that evolves the original Koru Bank prototype into a **full stack** application, with a React frontend, a FastAPI backend, session/conversation persistence, event-driven automations, tests, and an architecture prepared for future AI integration.
 
-> **Importante:** este projeto é uma simulação educacional. Não executa operações bancárias reais, não deve receber dados pessoais reais e não implementa autenticação bancária de produção.
-> Acesso ao projeto: https://koru-bank.onrender.com/
+> **Important:** this project is an educational simulation. It does not perform real banking operations, must not receive real personal data, and does not implement production-grade banking authentication.
+> Live demo: https://koru-bank.onrender.com/
 
-## Destaques
+## Highlights
 
-- React + Vite com experiência responsiva e fluxo de atendimento
-- FastAPI com schemas tipados, CORS e documentação OpenAPI automática
-- Validação real do algoritmo de CPF para o fluxo demonstrativo
-- Sessão independente por usuário; nenhum estado global compartilhado entre conversas
-- Persistência em SQLite por padrão e configuração pronta para PostgreSQL/Supabase
-- Chatbot determinístico baseado em regras, com classificação de intenção testável
-- Fluxo simulado de saldo, transferência com confirmação e handoff humano
-- Guardrail de transferência de alto valor para revisão manual
-- Automação orientada a eventos e trilha de auditoria
-- Dashboard operacional com métricas e eventos recentes
-- Camada `ai/` pronta para receber um provedor de IA, mas **desativada nesta versão**
-- Testes backend e pipeline de CI no GitHub Actions
-- Docker para subir frontend + backend com um único comando
+- React + Vite with a responsive UI and a guided support flow
+- FastAPI with typed schemas, CORS, and automatic OpenAPI documentation
+- Real CPF (Brazilian tax ID) checksum validation for the demo flow
+- Independent session per user; no global state shared across conversations
+- Persistence via SQLite by default, with configuration ready for PostgreSQL/Supabase
+- Deterministic, rule-based chatbot with testable intent classification
+- Simulated balance lookup, transfer with confirmation, and human handoff
+- High-value transfer guardrail that routes to manual review
+- Event-driven automation with an audit trail
+- Operational dashboard with metrics and recent events
+- `ai/` layer ready to receive an AI provider, but **disabled in this version**
+- Backend tests and a CI pipeline on GitHub Actions
+- Docker setup to run frontend + backend with a single command
 
-## Arquitetura
+## Architecture
 
 ```text
 React / Vite
@@ -37,8 +39,8 @@ FastAPI
     v
 Conversation Service
     |
-    +-- Rule Intent Classifier  <--- ativo
-    +-- AI Provider Interface   <--- preparado / desativado
+    +-- Rule Intent Classifier  <--- active
+    +-- AI Provider Interface   <--- ready / disabled
     +-- Automation Service
     +-- Guardrails
     |
@@ -46,51 +48,51 @@ Conversation Service
 SQLAlchemy
     |
     +-- SQLite (local)
-    +-- PostgreSQL / Supabase (configurável)
+    +-- PostgreSQL / Supabase (configurable)
 ```
 
-Detalhes: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-## Fluxos disponíveis
+## Available flows
 
-### Cliente existente
+### Existing customer
 
-1. Inicia uma sessão com CPF fictício válido.
-2. Informa o nome no chat.
-3. Seleciona "Já sou cliente".
-4. Pode consultar saldo fictício, simular transferência ou pedir atendimento humano.
-5. Transferências acima do limite de demonstração são encaminhadas para revisão manual.
+1. Starts a session with a valid fictitious CPF.
+2. Provides a name in the chat.
+3. Selects "I'm already a customer".
+4. Can check a fictitious balance, simulate a transfer, or request human support.
+5. Transfers above the demo threshold are routed to manual review.
 
-### Novo cliente
+### New customer
 
-O fluxo registra apenas um **evento demonstrativo de interesse**, sem coletar dados adicionais. Em uma solução real, essa etapa seria substituída por onboarding/KYC integrado a serviços apropriados.
+This flow only logs a **demo interest event**, with no additional data collected. In a real solution, this step would be replaced by onboarding/KYC integrated with appropriate services.
 
 ## Stack
 
-| Camada | Tecnologias |
+| Layer | Technologies |
 | --- | --- |
 | Frontend | React 18, React Router, Vite |
 | Backend | Python, FastAPI, Pydantic |
-| Persistência | SQLAlchemy, SQLite; pronto para PostgreSQL |
-| Qualidade | Pytest, Vitest, GitHub Actions |
+| Persistence | SQLAlchemy, SQLite; ready for PostgreSQL |
+| Quality | Pytest, Vitest, GitHub Actions |
 | Infra | Docker, Nginx |
-| IA | Interface preparada; integração não ativada |
+| AI | Interface prepared; integration not active |
 
-## Executar com Docker
+## Run with Docker
 
-Pré-requisito: Docker Desktop.
+Prerequisite: Docker Desktop.
 
 ```bash
 docker compose up --build
 ```
 
-Acesse:
+Access:
 
 - Frontend: `http://localhost:5173`
 - API: `http://localhost:8000`
 - Swagger/OpenAPI: `http://localhost:8000/docs`
 
-## Executar localmente sem Docker
+## Run locally without Docker
 
 ### Backend
 
@@ -117,7 +119,7 @@ uvicorn app.main:app --reload
 
 ### Frontend
 
-Em outro terminal:
+In another terminal:
 
 ```bash
 cd frontend
@@ -125,40 +127,40 @@ npm install
 npm run dev
 ```
 
-## CPF para demonstração
+## Demo CPF
 
-Use apenas dados fictícios. Um exemplo de CPF matematicamente válido para teste é:
+Use fictitious data only. An example of a mathematically valid CPF for testing is:
 
 ```text
 529.982.247-25
 ```
 
-A aplicação valida os dígitos verificadores. O backend não guarda o CPF em texto puro: a sessão armazena apenas hash e versão mascarada. Isso **não transforma o fluxo em autenticação bancária real**.
+The application validates the checksum digits. The backend does not store the CPF in plain text: the session only keeps a hash and a masked version. This **does not turn the flow into real banking authentication**.
 
-## Endpoints principais
+## Main endpoints
 
-| Método | Endpoint | Uso |
+| Method | Endpoint | Purpose |
 | --- | --- | --- |
-| GET | `/api/v1/health` | Saúde e capabilities da API |
-| POST | `/api/v1/sessions` | Cria sessão demonstrativa |
-| POST | `/api/v1/chat/start` | Inicia/recupera conversa |
-| POST | `/api/v1/chat/messages` | Processa mensagem |
-| GET | `/api/v1/operations/dashboard` | Métricas operacionais |
+| GET | `/api/v1/health` | API health and capabilities |
+| POST | `/api/v1/sessions` | Creates a demo session |
+| POST | `/api/v1/chat/start` | Starts/resumes a conversation |
+| POST | `/api/v1/chat/messages` | Processes a message |
+| GET | `/api/v1/operations/dashboard` | Operational metrics |
 
-## IA: pronta, mas sem conexão nesta versão
+## AI: ready, but not connected in this version
 
-O projeto não apresenta regras como se fossem IA. A implementação atual usa um classificador determinístico e expõe uma fronteira clara para evolução futura:
+The project does not present rules as if they were AI. The current implementation uses a deterministic classifier and exposes a clear boundary for future evolution:
 
 ```text
 app/ai/base.py
 app/ai/router.py
 ```
 
-Quando a integração for feita, o LLM poderá atuar apenas na **interpretação da intenção/extração estruturada**, enquanto operações sensíveis continuarão controladas pelo backend, com validação, confirmação e guardrails.
+Once integrated, the LLM would act only on **intent interpretation/structured extraction**, while sensitive operations would remain controlled by the backend, with validation, confirmation, and guardrails.
 
-Veja o plano em [`docs/AI_ROADMAP.md`](docs/AI_ROADMAP.md).
+See the roadmap in [`docs/AI_ROADMAP.md`](docs/AI_ROADMAP.md).
 
-## Testes
+## Tests
 
 Backend:
 
@@ -175,8 +177,8 @@ npm install
 npm test
 ```
 
-## O que este case demonstra
+## What this case demonstrates
 
-Este repositório foi estruturado para evidenciar competências além da interface visual: separação de responsabilidades, desenho de API, modelagem de estado, persistência, validação, automação, guardrails, observabilidade básica, testes, CI e preparação para recursos de IA sem acoplar regras de negócio ao modelo.
+This repository was structured to showcase skills beyond the visual interface: separation of concerns, API design, state modeling, persistence, validation, automation, guardrails, basic observability, testing, CI, and preparation for AI features without coupling business rules to the model.
 
-Veja também [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md) para decisões técnicas e pontos de apresentação em entrevista.
+See also [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md) for technical decisions and interview talking points.
